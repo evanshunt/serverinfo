@@ -1,9 +1,7 @@
 <?php
 
-
-class ServerInfo extends LeftAndMain
+class ServerInfo extends LeftAndMain implements PermissionProvider
 {
-
     private static $url_segment = 'serverinfo';
     private static $menu_priority = -3;
 
@@ -11,15 +9,18 @@ class ServerInfo extends LeftAndMain
 		'getinfo',
     );
 
-    public function init() {
-        parent::init();
-        if ( !Permission::check('ServerInfoAccess') ) {
-            CMSMenu::remove_menu_item('ServerInfo');
-        }
+    public function providePermissions() {
+        return array(
+            "CMS_ACCESS_ServerInfo" => "Access Serverinfo",
+        );
+    }
+
+    public function canView($member = null) {
+        return Permission::check('CMS_ACCESS_ServerInfo', 'any', $member);
     }
 
     public function getinfo(){
-        if ( Permission::check('ServerInfoAccess') ) {
+        if ( Permission::check('CMS_ACCESS_ServerInfo', 'any', Member::currentUser()) ) {
             ob_start();
             phpinfo();
             $info = ob_get_contents();
@@ -28,10 +29,4 @@ class ServerInfo extends LeftAndMain
         }
         return NULL;
     }
-
-}
-
-class ServerInfoAccess extends ModelAdmin
-{
-
 }
