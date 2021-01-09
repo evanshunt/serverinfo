@@ -10,7 +10,8 @@ From where you have the `composer.json` file run `composer require evanshunt/ser
 
 Run `dev/build`
 
-Then you can assign user groups the permission for `ServerInfoPermission`
+Then you can assign user groups the permission for `ServerInfoAccess`
 ## Changelog:
 
+- 2021-01-09: code cleanup
 - 2021-01-07: initial commit

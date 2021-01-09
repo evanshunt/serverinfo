@@ -4,7 +4,6 @@
 class ServerInfo extends LeftAndMain
 {
 
-    private static $required_permission_codes = array('ADMIN');
     private static $url_segment = 'serverinfo';
     private static $menu_priority = -3;
 
@@ -13,17 +12,14 @@ class ServerInfo extends LeftAndMain
     );
 
     public function init() {
-        //print_r(Permission::check('ServerInfoPermission'));
         parent::init();
-        if ( !Permission::check('ServerInfoPermission') ) {
+        if ( !Permission::check('ServerInfoAccess') ) {
             CMSMenu::remove_menu_item('ServerInfo');
-        }else{
-            //print_r(Member::currentUserID());
         }
     }
 
     public function getinfo(){
-        if ( Permission::check('ServerInfoPermission') ) {
+        if ( Permission::check('ServerInfoAccess') ) {
             ob_start();
             phpinfo();
             $info = ob_get_contents();
@@ -35,7 +31,7 @@ class ServerInfo extends LeftAndMain
 
 }
 
-class ServerInfoPermission extends ModelAdmin
+class ServerInfoAccess extends ModelAdmin
 {
 
 }
