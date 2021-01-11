@@ -1,6 +1,6 @@
 ## Description
 
-A small SilverStripe module that provides logged in users -that have permission to view this module- assess to phpinfo() print out. This helps in quickly finding server info.
+A small SilverStripe module that provides logged in users -that have permission to view this module- access to phpinfo() print out. This helps in quickly finding server info.
 
 This is SilverStripe 4 supported release
 
