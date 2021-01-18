@@ -29,10 +29,20 @@ class ServerInfo extends LeftAndMain implements PermissionProvider
 
     public function getinfo(){
         if ( Permission::check('evanshunt\ServerInfo', 'any', Member::currentUser()) ) {
-            ob_start();
-            phpinfo();
-            $info = ob_get_contents();
-            ob_get_clean();
+
+            if (in_array('phpinfo', explode(',', ini_get('disable_functions')))) {
+                $infoArray = [];
+                foreach (ini_get_all(null, false) as $option => $value) {
+                    $infoArray[$option] = $value;
+                }
+                $info = '<pre>' + print_r($infoArray, true) + '</pre>';
+            } else {
+                ob_start();
+                phpinfo();
+                $info = ob_get_contents();
+                ob_get_clean();
+            }
+
             return $info;
         }
         return NULL;
