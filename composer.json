@@ -1,7 +1,7 @@
 {
 	"name": "evanshunt/serverinfo",
 	"description": "A small SilverStripe module that provides logged in users -that have permission to view this module- assess to phpinfo() print out. This helps in quickly finding server info.",
-	"type": "silverstripe-module",
+	"type": "silverstripe-vendormodule",
 	"homepage": "http://github.com/evanshunt/serverinfo",
 	"keywords": ["silverstripe", "serverinfo"],
 	"license": "BSD-3-Clause",
