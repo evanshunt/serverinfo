@@ -32,11 +32,15 @@ class ServerInfo extends LeftAndMain implements PermissionProvider
 
             // If phpinfo() is disabled, get the data by other means
             if (in_array('phpinfo', explode(',', ini_get('disable_functions')))) {
-                $infoArray = [];
+                $info = '<style>#phpinitable{max-width: 700px;}
+                    #phpinitable tr td {padding: 0.5em;}
+                    #phpinitable tr:nth-child(even) {background-color:lightgrey;}
+                    #phpinitable tr td:nth-child(2){word-break: break-all;}</style>';
+                $info .= '<div id="phpinitable"><table width="100%"><thead><tr><th width>Option</th><th>Value</th></tr></thead><tbody>';
                 foreach (ini_get_all(null, false) as $option => $value) {
-                    $infoArray[$option] = $value;
+                    $info .= "<tr><td>$option</td><td align='right'>$value</td>";
                 }
-                $info = '<pre>' . print_r($infoArray, true) . '</pre>';
+                $info .= '</tbody></table></div>';
             } else {
                 ob_start();
                 phpinfo();
