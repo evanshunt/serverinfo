@@ -30,9 +30,18 @@ class ServerInfo extends LeftAndMain implements PermissionProvider
     public function getinfo(){
         if ( Permission::check('evanshunt\ServerInfo', 'any', Member::currentUser()) ) {
             ob_start();
-            phpinfo();
+            @phpinfo();
+            $info = ob_get_contents();
+            ob_start();
+            echo '<h2>Sorry, looks like your server has phpinfo() disabled</h2>';
+            echo '<p><em>Here is some information from `ini_get_all(null, false)`</em></p>';
+            echo '<p>Running on PHP version '.phpversion().'</p>';
+            if( empty($info) ){ // most likely phpinfo() has been disabled :(
+                foreach (ini_get_all(null, false) as $option => $value) echo "$option=$value"."<br/>";
+            }
             $info = ob_get_contents();
             ob_get_clean();
+
             return $info;
         }
         return NULL;
