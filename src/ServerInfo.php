@@ -29,18 +29,24 @@ class ServerInfo extends LeftAndMain implements PermissionProvider
 
     public function getinfo(){
         if ( Permission::check('evanshunt\ServerInfo', 'any', Member::currentUser()) ) {
-            ob_start();
-            @phpinfo();
-            $info = ob_get_contents();
-            ob_start();
-            echo '<h2>Sorry, looks like your server has phpinfo() disabled</h2>';
-            echo '<p><em>Here is some information from `ini_get_all(null, false)`</em></p>';
-            echo '<p>Running on PHP version '.phpversion().'</p>';
-            if( empty($info) ){ // most likely phpinfo() has been disabled :(
-                foreach (ini_get_all(null, false) as $option => $value) echo "$option=$value"."<br/>";
+
+            // If phpinfo() is disabled, get the data by other means
+            if (in_array('phpinfo', explode(',', ini_get('disable_functions')))) {
+                $info = '<style>#phpinitable{max-width: 700px;}
+                    #phpinitable tr td {padding: 0.5em;}
+                    #phpinitable tr:nth-child(even) {background-color:lightgrey;}
+                    #phpinitable tr td:nth-child(2){word-break: break-all;}</style>';
+                $info .= '<div id="phpinitable"><table width="100%"><thead><tr><th width>Option</th><th>Value</th></tr></thead><tbody>';
+                foreach (ini_get_all(null, false) as $option => $value) {
+                    $info .= "<tr><td>$option</td><td align='right'>$value</td>";
+                }
+                $info .= '</tbody></table></div>';
+            } else {
+                ob_start();
+                phpinfo();
+                $info = ob_get_contents();
+                ob_get_clean();
             }
-            $info = ob_get_contents();
-            ob_get_clean();
 
             return $info;
         }
